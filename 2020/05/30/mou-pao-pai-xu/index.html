@@ -470,14 +470,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-05-30
+                    2020-05-31
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    555
+                    533
                 </div>
                 
 
@@ -532,9 +532,6 @@ class Program
     /// &lt;summary&gt;
     /// 冒泡排序
     /// &lt;/summary&gt;
-    /// &lt;typeparam name="T"&gt;&lt;/typeparam&gt;
-    /// &lt;param name="sort"&gt;&lt;/param&gt;
-    /// &lt;param name="n"&gt;&lt;/param&gt;
     static void Bubble_sort(SortT[] sort, int n)
     {
         int m = n, j, flag = 1; //flag :记录是否发生交换
@@ -574,22 +571,23 @@ class Program
 </ol>
 <pre><code>void Bubble_sort(SortT[] sort, int n)
 {
-    int m = n, j, LastChange = 1;  //LastChange:下次排序位置
-    SortT Temp;
-    while (m &gt; 1)
-    {
-        for (j = 0; j &lt; m - 1; j++)  //一次交换过程为将最大值放在最后
+        int m = n, j;  //LastChange:下次排序位置
+        SortT Temp;
+        while (m &gt; 1)
         {
-            if (sort[j].key &gt; sort[j + 1].key)
+            int LastChange = 1;
+            for (j = 0; j &lt; m-1 ; j++)  //一次交换过程为将最大值放在最后
             {
-                Temp = sort[j];
-                sort[j] = sort[j + 1];
-                sort[j + 1] = Temp;
-                LastChange = j; //更新排序位置
+                if (sort[j].key &gt; sort[j + 1].key)
+                {
+                    Temp = sort[j];
+                    sort[j] = sort[j + 1];
+                    sort[j + 1] = Temp;
+                    LastChange = j; //更新排序位置
+                }
             }
+            m = LastChange;
         }
-        m--;
-    }
 }</code></pre><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
