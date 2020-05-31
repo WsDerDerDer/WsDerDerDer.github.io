@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="冒泡排序, 王DerDer的Der">
+    <meta name="keywords" content="Ugui实现简单摇杆, 王DerDer的Der">
     <meta name="description" content="咱们都是大水比">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>冒泡排序 | 王DerDer的Der</title>
+    <title>Ugui实现简单摇杆 | 王DerDer的Der</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">冒泡排序</h1>
+                    <h1 class="description center-align post-title">Ugui实现简单摇杆</h1>
                 </div>
             </div>
         </div>
@@ -438,8 +438,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%8E%92%E5%BA%8F/">
-                                <span class="chip bg-color">排序</span>
+                            <a href="/tags/Unity/">
+                                <span class="chip bg-color">Unity</span>
+                            </a>
+                        
+                            <a href="/tags/UI/">
+                                <span class="chip bg-color">UI</span>
                             </a>
                         
                     </div>
@@ -450,8 +454,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
-                                数据结构与算法
+                            <a href="/categories/Unity/" class="post-category">
+                                Unity
                             </a>
                         
                     </div>
@@ -463,7 +467,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-05-30
+                    2020-05-31
                 </div>
                 
 
@@ -477,7 +481,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    533
+                    350
                 </div>
                 
 
@@ -494,101 +498,66 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><h4 id="排序过程"><a href="#排序过程" class="headerlink" title="排序过程"></a>排序过程</h4><ol>
-<li>将第一个和第二个的记录的关键字进行比较,若为逆序r[1].key&gt;r[2].key,</li>
+                <h2 id="Unity-Ugui实现简单摇杆"><a href="#Unity-Ugui实现简单摇杆" class="headerlink" title="Unity Ugui实现简单摇杆"></a>Unity Ugui实现简单摇杆</h2><h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ul>
+<li>利用Unity的ScrollRect组件</li>
+</ul>
+<ol>
+<li>在Canvas上创建如此结构的空物体,在Restrict上添加Image组件作为背景图片,</li>
 </ol>
-<p>则交换;然后如此比较至n-1个和n个记录为止—第一趟冒泡排序,结果关键字</p>
-<p>最大的记录被安置在最后一个记录上.</p>
+<p>在Handel上添加Image组件,为摇杆的图标.</p>
+<p><img src="http://i2.tiimg.com/720150/ad1476373d27778e.png" alt=""></p>
 <ol start="2">
-<li>对前n-1个记录进行第二趟冒泡排序,结果使关键字次大的记录在n-1的位</li>
+<li>创建C#脚本Joystic,并拖到Joystic上,编辑脚本,代码如下</li>
 </ol>
-<p>置.</p>
-<ol start="3">
-<li>重复过程,直到在一趟排序过程中没有交换过程.</li>
-</ol>
-<h4 id="代码-C"><a href="#代码-C" class="headerlink" title="代码(C#)"></a>代码(C#)</h4><pre><code>using System;
-class Program
+<pre><code>using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+//继承ScrollRect组件,重写其OnDrag实现摇杆功能
+public class Joystic : ScrollRect
 {
-    static void Main(string[] args)
+
+    private float radius;                    //区域半径
+    private Vector2 Outvalue;
+    protected override void Start()          //以Vector2为输出值
     {
-        Random rd = new Random();
-        SortT[] sortArray = new SortT[10];
-        //随机生成需要排序的对象
-        for (int i = 0; i &lt; sortArray.Length; i++)
-        {
-            SortT sort = new SortT() { key = rd.Next(0, 100) };
-            sortArray[i] = sort;
-            Console.WriteLine("随机值" + i + ":" + sort.key);
-        }
-        Bubble_sort(sortArray, sortArray.Length);
-        Console.WriteLine("\n");
-        for (int i = 0; i &lt; sortArray.Length; i++)
-        {
-            Console.WriteLine("排序值" + i + ":" + sortArray[i].key);
-        }
-        Console.ReadKey();
+         //sizeDelta:文档意思为 矩阵变换的大小相对于锚点之间的距离
+         //就是RectTransform上的Width和Height 两者的大小在此要设为相同值
+        radius = (transform as RectTransform).sizeDelta.x * 0.5f;   
+        StartCoroutine(Handel());
     }
 
-    /// &lt;summary&gt;
-    /// 冒泡排序
-    /// &lt;/summary&gt;
-    static void Bubble_sort(SortT[] sort, int n)
+    public override void OnDrag(PointerEventData eventData)
     {
-        int m = n, j, flag = 1; //flag :记录是否发生交换
-        SortT Temp;
-        while ((m &gt; 1) &amp;&amp; flag == 1)
+        base.OnDrag(eventData);
+        //content的锚点位置
+        Vector2 pos = content.anchoredPosition;
+        //当摇杆位置超出半径需要限制
+        if (pos.magnitude &gt; radius)
         {
-            flag = 0;
-            for (j = 0; j &lt; m - 1; j++)  //一次交换过程为将最大值放在最后
-            {
-                if (sort[j].key &gt; sort[j + 1].key)
-                {
-                    Temp = sort[j];
-                    sort[j] = sort[j + 1];
-                    sort[j + 1] = Temp;
-                    flag = 1;   //发生交换
-                }
-            }
-            m--;
+            //归一化pos并乘以半径为最大值
+            Vector2 posEnd = pos.normalized * radius;
+            //设置锚点位置
+            SetContentAnchoredPosition(posEnd);
         }
     }
-    public class SortT
+    //我用的一个协程,也可以在update中执行
+    IEnumerator Handel()
     {
-        public int key;
-    }
-}</code></pre><p><img src="http://i2.tiimg.com/720150/440c21d5d69ba56f.png" alt="结果"></p>
-<ol start="4">
-<li>时间复杂度</li>
-</ol>
-<p>最好情况(正序):比较次数:n-1 移动次数:0 </p>
-<p>最坏情况(逆序):比较次数1/2(n^2-n) 移动次数:3/2(n^2-n)</p>
-<ol start="5">
-<li>空间复杂度</li>
-</ol>
-<p>S(n)=o(1)</p>
-<ol start="6">
-<li>可从上次交换的位置继续进行排序提高效率</li>
-</ol>
-<pre><code>void Bubble_sort(SortT[] sort, int n)
-{
-        int m = n, j;  //LastChange:下次排序位置
-        SortT Temp;
-        while (m &gt; 1)
+        while (true)
         {
-            int LastChange = 1;
-            for (j = 0; j &lt; m-1 ; j++)  //一次交换过程为将最大值放在最后
-            {
-                if (sort[j].key &gt; sort[j + 1].key)
-                {
-                    Temp = sort[j];
-                    sort[j] = sort[j + 1];
-                    sort[j + 1] = Temp;
-                    LastChange = j; //更新排序位置
-                }
-            }
-            m = LastChange;
+            Outvalue.x = (content.anchoredPosition / radius).x;
+            Outvalue.y = (content.anchoredPosition / radius).y;
+            yield return new WaitForSeconds(0.02f);
         }
-}</code></pre><script>
+    }
+}</code></pre><ol start="3">
+<li>Tip:MoveMent Type要设为Elastic即弹性的</li>
+</ol>
+<ul>
+<li>根据输出值来控制人物.</li>
+</ul>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -631,7 +600,7 @@ class Program
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://WsDerDerDer.github.io/2020/05/30/mou-pao-pai-xu/">http://WsDerDerDer.github.io/2020/05/30/mou-pao-pai-xu/</a>
+                    <a href="http://WsDerDerDer.github.io/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/">http://WsDerDerDer.github.io/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -669,8 +638,12 @@ class Program
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%8E%92%E5%BA%8F/">
-                                    <span class="chip bg-color">排序</span>
+                                <a href="/tags/Unity/">
+                                    <span class="chip bg-color">Unity</span>
+                                </a>
+                            
+                                <a href="/tags/UI/">
+                                    <span class="chip bg-color">UI</span>
                                 </a>
                             
                         </div>
@@ -841,7 +814,7 @@ class Program
         repo: 'Comment.github.io',
         owner: 'WsDerDerDer',
         admin: "WsDerDerDer",
-        id: '2020-05-30T22-14-39',
+        id: '2020-05-31T21-16-42',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -865,9 +838,10 @@ class Program
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/">
                     <div class="card-image">
@@ -894,9 +868,9 @@ class Program
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-31
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -909,6 +883,7 @@ class Program
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -928,7 +903,7 @@ class Program
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2020/05/30/mou-pao-pai-xu/">
@@ -968,7 +943,6 @@ class Program
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     

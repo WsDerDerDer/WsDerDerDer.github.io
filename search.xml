@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Ugui实现简单摇杆</title>
+      <link href="/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/"/>
+      <url>/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Unity-Ugui实现简单摇杆"><a href="#Unity-Ugui实现简单摇杆" class="headerlink" title="Unity Ugui实现简单摇杆"></a>Unity Ugui实现简单摇杆</h2><h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ul><li>利用Unity的ScrollRect组件</li></ul><ol><li>在Canvas上创建如此结构的空物体,在Restrict上添加Image组件作为背景图片,</li></ol><p>在Handel上添加Image组件,为摇杆的图标.</p><p><img src="http://i2.tiimg.com/720150/ad1476373d27778e.png" alt=""></p><ol start="2"><li>创建C#脚本Joystic,并拖到Joystic上,编辑脚本,代码如下</li></ol><pre><code>using System.Collections;using UnityEngine;using UnityEngine.EventSystems;using UnityEngine.UI;//继承ScrollRect组件,重写其OnDrag实现摇杆功能public class Joystic : ScrollRect{    private float radius;                    //区域半径    private Vector2 Outvalue;    protected override void Start()          //以Vector2为输出值    {         //sizeDelta:文档意思为 矩阵变换的大小相对于锚点之间的距离         //就是RectTransform上的Width和Height 两者的大小在此要设为相同值        radius = (transform as RectTransform).sizeDelta.x * 0.5f;           StartCoroutine(Handel());    }    public override void OnDrag(PointerEventData eventData)    {        base.OnDrag(eventData);        //content的锚点位置        Vector2 pos = content.anchoredPosition;        //当摇杆位置超出半径需要限制        if (pos.magnitude &gt; radius)        {            //归一化pos并乘以半径为最大值            Vector2 posEnd = pos.normalized * radius;            //设置锚点位置            SetContentAnchoredPosition(posEnd);        }    }    //我用的一个协程,也可以在update中执行    IEnumerator Handel()    {        while (true)        {            Outvalue.x = (content.anchoredPosition / radius).x;            Outvalue.y = (content.anchoredPosition / radius).y;            yield return new WaitForSeconds(0.02f);        }    }}</code></pre><ol start="3"><li>Tip:MoveMent Type要设为Elastic即弹性的</li></ol><ul><li>根据输出值来控制人物.</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> Unity </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Unity </tag>
+            
+            <tag> UI </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>冒泡排序</title>
       <link href="/2020/05/30/mou-pao-pai-xu/"/>
       <url>/2020/05/30/mou-pao-pai-xu/</url>
