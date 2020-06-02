@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Ugui实现简单摇杆, 王DerDer的Der">
+    <meta name="keywords" content="中介者模式, 王DerDer的Der">
     <meta name="description" content="咱们都是大水比">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Ugui实现简单摇杆 | 王DerDer的Der</title>
+    <title>中介者模式 | 王DerDer的Der</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Ugui实现简单摇杆</h1>
+                    <h1 class="description center-align post-title">中介者模式</h1>
                 </div>
             </div>
         </div>
@@ -438,12 +438,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Unity/">
-                                <span class="chip bg-color">Unity</span>
-                            </a>
-                        
-                            <a href="/tags/UI/">
-                                <span class="chip bg-color">UI</span>
+                            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                                <span class="chip bg-color">设计模式</span>
                             </a>
                         
                     </div>
@@ -454,8 +450,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Unity/" class="post-category">
-                                Unity
+                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
+                                设计模式
                             </a>
                         
                     </div>
@@ -467,7 +463,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-05-31
+                    2020-06-02
                 </div>
                 
 
@@ -481,7 +477,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    350
+                    626
                 </div>
                 
 
@@ -498,66 +494,119 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Unity-Ugui实现简单摇杆"><a href="#Unity-Ugui实现简单摇杆" class="headerlink" title="Unity Ugui实现简单摇杆"></a>Unity Ugui实现简单摇杆</h2><h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ul>
-<li>利用Unity的ScrollRect组件</li>
-</ul>
-<ol>
-<li>在Canvas上创建如此结构的空物体,在Restrict上添加Image组件作为背景图片,</li>
+                <h2 id="设计模式之中介者模式"><a href="#设计模式之中介者模式" class="headerlink" title="设计模式之中介者模式"></a>设计模式之中介者模式</h2><p><em>介绍:用一个中介对象封装一系列的对象交互.中介者使各对象不必显示的相互引用,从而使其耦合松散<br>而且可以独立地改变他们的交互</em></p>
+<p><strong>优点：<br>1.降低了类的复杂度，将一对多转化成了一对一。<br>2.各个类之间的解耦。<br>3.符合迪米特原则。</strong></p>
+<p><strong>缺点：中介者会庞大，变得复杂难以维护</strong></p>
+<h4 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h4><ol>
+<li>系统中对象之间存在比较复杂的引用关系，导致它们之间的依赖关系结构混乱而且难以复用该对象。 </li>
+<li>想通过一个中间类来封装多个类中的行为，而又不想生成太多的子类。</li>
 </ol>
-<p>在Handel上添加Image组件,为摇杆的图标.</p>
-<p><img src="http://i2.tiimg.com/720150/ad1476373d27778e.png" alt=""></p>
-<ol start="2">
-<li>创建C#脚本Joystic,并拖到Joystic上,编辑脚本,代码如下</li>
-</ol>
-<pre><code>using System.Collections;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-//继承ScrollRect组件,重写其OnDrag实现摇杆功能
-public class Joystic : ScrollRect
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>假如爸爸和妈妈发生了矛盾,两个人互不交流,此时儿子充当两个人消息传递者,儿子为中介者,爸爸妈妈为<br>需要互相通信的两个对象</p>
+<p><strong>代码实现(C#)</strong></p>
+<pre><code>using System;
+using System.Collections.Generic;
+
+namespace 中介者模式
 {
-
-    private float radius;                    //区域半径
-    private Vector2 Outvalue;
-    protected override void Start()          //以Vector2为输出值
+    class Program
     {
-         //sizeDelta:文档意思为 矩阵变换的大小相对于锚点之间的距离
-         //就是RectTransform上的Width和Height 两者的大小在此要设为相同值
-        radius = (transform as RectTransform).sizeDelta.x * 0.5f;   
-        StartCoroutine(Handel());
-    }
-
-    public override void OnDrag(PointerEventData eventData)
-    {
-        base.OnDrag(eventData);
-        //content的锚点位置
-        Vector2 pos = content.anchoredPosition;
-        //当摇杆位置超出半径需要限制
-        if (pos.magnitude &gt; radius)
+        static void Main(string[] args)
         {
-            //归一化pos并乘以半径为最大值
-            Vector2 posEnd = pos.normalized * radius;
-            //设置锚点位置
-            SetContentAnchoredPosition(posEnd);
+            //中介者:儿子
+            MediatorPeople Son = new MediatorPeople("胡图图");
+            Dad dad = new Dad(Son, "胡英俊");
+            Mom mom = new Mom(Son, "张小丽");
+            Son.AddPeople(dad);
+            Son.AddPeople(mom);
+            dad.Saying(mom, "不要生气了");
+            mom.Saying(dad, "好的");
+
+            Console.Read();
         }
     }
-    //我用的一个协程,也可以在update中执行
-    IEnumerator Handel()
+
+    /// &lt;summary&gt;
+    /// 抽象服务对象基类
+    /// &lt;/summary&gt;
+    abstract class People
     {
-        while (true)
+        protected string Name;
+        //中介者对象
+        private MediatorPeople m_mediator;
+        public People(MediatorPeople mediator, string Name)
         {
-            Outvalue.x = (content.anchoredPosition / radius).x;
-            Outvalue.y = (content.anchoredPosition / radius).y;
-            yield return new WaitForSeconds(0.02f);
+            m_mediator = mediator;
+            this.Name = Name;
+        }
+
+        /// &lt;summary&gt;
+        /// 对指定对象发送消息
+        /// &lt;/summary&gt;
+        /// &lt;param name="hear"&gt;&lt;/param&gt;
+        /// &lt;param name="message"&gt;&lt;/param&gt;
+        public void Saying(People hear, string message)
+        {
+            m_mediator.Saying(this, hear, message);
+        }
+
+        //收到
+        public void Get(string message)
+        {
+            Console.WriteLine(Name + "收到消息:" + message);
         }
     }
-}</code></pre><ol start="3">
-<li>Tip:MoveMent Type要设为Elastic即弹性的</li>
-</ol>
-<ul>
-<li>根据输出值来控制人物.</li>
-</ul>
-<script>
+    class Mom : People
+    {
+        public Mom(MediatorPeople mediator, string Name) : base(mediator, Name) { }
+    }
+    class Dad : People
+    {
+        public Dad(MediatorPeople mediator, string Name) : base(mediator, Name) { }
+    }
+
+    /// &lt;summary&gt;
+    /// 中介者
+    /// &lt;/summary&gt;
+    class MediatorPeople
+    {
+        //所有要服务的人
+        protected List&lt;People&gt; m_peoples;
+        //中介者名称
+        private string Name;
+        public MediatorPeople(string name)
+        {
+            this.Name = name;
+            m_peoples = new List&lt;People&gt;();
+        }
+
+        //增加需要服务的对象
+        public void AddPeople(People people)
+        {
+            m_peoples.Add(people);
+        }
+
+        //向指定的人对话
+        public void Saying(People peopleSay, People PeopleHear, string Message)
+        {
+            if (!m_peoples.Contains(peopleSay))
+            {
+                Console.WriteLine(Name + "不能为你服务");
+                return;
+            }
+            Console.WriteLine(Name+"为你服务");
+            for (int i = 0; i &lt; m_peoples.Count; i++)
+            {
+                if (m_peoples[i] == PeopleHear)
+                {
+                    m_peoples[i].Get(Message);
+                    return;
+                }
+            }
+            Console.WriteLine("我不认识这个人");
+        }
+    }
+}
+</code></pre><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -600,7 +649,7 @@ public class Joystic : ScrollRect
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://WsDerDerDer.github.io/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/">http://WsDerDerDer.github.io/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/</a>
+                    <a href="http://WsDerDerDer.github.io/2020/06/02/zhong-jie-zhe-mo-shi/">http://WsDerDerDer.github.io/2020/06/02/zhong-jie-zhe-mo-shi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -638,12 +687,8 @@ public class Joystic : ScrollRect
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Unity/">
-                                    <span class="chip bg-color">Unity</span>
-                                </a>
-                            
-                                <a href="/tags/UI/">
-                                    <span class="chip bg-color">UI</span>
+                                <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                                    <span class="chip bg-color">设计模式</span>
                                 </a>
                             
                         </div>
@@ -814,7 +859,7 @@ public class Joystic : ScrollRect
         repo: 'Comment.github.io',
         owner: 'WsDerDerDer',
         admin: "WsDerDerDer",
-        id: '2020-05-31T21-16-42',
+        id: '2020-06-02T11-06-29',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -838,9 +883,10 @@ public class Joystic : ScrollRect
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/06/02/zhong-jie-zhe-mo-shi/">
                     <div class="card-image">
@@ -860,9 +906,9 @@ public class Joystic : ScrollRect
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -875,6 +921,7 @@ public class Joystic : ScrollRect
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -893,37 +940,40 @@ public class Joystic : ScrollRect
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/05/30/mou-pao-pai-xu/">
+                <a href="/2020/05/31/ugui-shi-xian-jian-dan-yao-gan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="冒泡排序">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Ugui实现简单摇杆">
                         
-                        <span class="card-title">冒泡排序</span>
+                        <span class="card-title">Ugui实现简单摇杆</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            冒泡排序排序过程
-将第一个和第二个的记录的关键字进行比较,若为逆序r[1].key&gt;r[2].key,
+                            Unity Ugui实现简单摇杆实现原理
+利用Unity的ScrollRect组件
 
-则交换;然后如此比较至n-1个和n个记录为止—第一趟冒泡排序,结果关键字
-最大的记录被安置在最后一个记录上.
 
-对前n-1个记录
+在Canvas上创建如此结构的空物体,在Restrict上添加Image组件作为背景图片,
+
+在Handel上添加Image组件,为摇杆的图标.
+
+
+创
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-31
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
-                                    数据结构与算法
+                            <a href="/categories/Unity/" class="post-category">
+                                    Unity
                                 </a>
                             
                             
@@ -933,8 +983,12 @@ public class Joystic : ScrollRect
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%8E%92%E5%BA%8F/">
-                        <span class="chip bg-color">排序</span>
+                    <a href="/tags/Unity/">
+                        <span class="chip bg-color">Unity</span>
+                    </a>
+                    
+                    <a href="/tags/UI/">
+                        <span class="chip bg-color">UI</span>
                     </a>
                     
                 </div>
