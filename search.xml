@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>快速排序</title>
+      <link href="/2020/06/03/kuai-su-pai-xu/"/>
+      <url>/2020/06/03/kuai-su-pai-xu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><h4 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h4><p>设有数组S</p><ol><li>如果数组元素是0或者1则返回</li><li>取S中任意元素v为pivot</li><li>将S-{v}分为两个不相交的集合</li><li>返回quickSort(S1),继而v,继而quickSort(S2)</li></ol><p><strong>选取枢纽元:</strong></p><ol><li>如果固定的选取第一个为pivot,当S为逆序时,分割就毫无意义.</li><li>随机的选取枢纽元则会因随机数生成影响总体运行效率.</li><li>三数中值分割法:使用左端,右端和中心位置三值的中值作为枢纽元.</li></ol><h3 id="代码-c"><a href="#代码-c" class="headerlink" title="代码(c#)"></a>代码(c#)</h3><pre><code>using System;namespace 快速排序{    class Program    {        static void Main(string[] args)        {            DateTime t1 = DateTime.Now;            Random rd = new Random();            int[] nums = new int[100];            for (int i = 0; i &lt; nums.Length; i++)            {                nums[i] = rd.Next(0, 10000);            }            QuickSort(nums, 0, nums.Length - 1);            Console.ReadKey();        }        public static void QuickSort(int[] arr, int startIndex, int endIndex)        {            int left = startIndex;            int right = endIndex - 1;            if ((left + 3) &lt;= right)            {                int pivot = Median(arr, startIndex, endIndex);                while (true)                {                    while (arr[++left] &lt; arr[pivot]) { }                    while (arr[--right] &gt; arr[pivot]) { }                    if (left &lt; right) { Swap(arr, left, right); }                    else break;                }                //交换pivot与left指针的值,此时left在right右边,大于pivot                Swap(arr, left, pivot);                //根据pivot分为两部分继续排序                QuickSort(arr, startIndex, left - 1);                QuickSort(arr, left + 1, endIndex);            }            else            {                //当需要排序的数值过少使用插入排序                InsertSort(arr, startIndex, endIndex + 1);            }        }        /// &lt;summary&gt;        /// 插入排序        /// &lt;/summary&gt;        /// &lt;param name="arr"&gt;&lt;/param&gt;        /// &lt;param name="n"&gt;&lt;/param&gt;        public static void InsertSort(int[] arr, int s, int n)        {            int temp, i, j;            for (i = s; i &lt; n; i++)            {                temp = arr[i];                for (j = i; j &gt; 0 &amp;&amp; arr[j - 1] &gt; temp; j--)                {                    arr[j] = arr[j - 1];                }                arr[j] = temp;            }        }        /// &lt;summary&gt;        /// 三数中值分割法:        /// &lt;/summary&gt;        /// &lt;param name="arr"&gt;&lt;/param&gt;        /// &lt;param name="left"&gt;&lt;/param&gt;        /// &lt;param name="right"&gt;&lt;/param&gt;        /// &lt;returns&gt;&lt;/returns&gt;        public static int Median(int[] arr, int left, int right)        {            int center = (left + right) / 2;            if (arr[left] &gt; arr[center])            {                Swap(arr, left, center);            }            if (arr[right] &lt; arr[left])            {                Swap(arr, right, center);            }            if (arr[center] &lt; arr[right])            {                Swap(arr, center, right);            }            Swap(arr, center, right - 1);            return right - 1;            //三值中,left为最小,right为最大,将枢纽元放到arr[right-1],在初始化阶段            //左右指针分别为left+1,right-2        }        /// &lt;summary&gt;        /// 交换数组中两个的位置        /// &lt;/summary&gt;        /// &lt;param name="arr"&gt;&lt;/param&gt;        /// &lt;param name="a"&gt;&lt;/param&gt;        /// &lt;param name="b"&gt;&lt;/param&gt;        public static void Swap(int[] arr, int a, int b)        {            int temp = arr[a];            arr[a] = arr[b];            arr[b] = temp;        }    }}</code></pre><p><img src="http://i2.tiimg.com/720150/fafa61636ddf38bc.png" alt="运行结果"></p><p>用上方的插入排序和快速排序进行比较,当数据个数在百万时,插入排序要等待很久才能完成排序,</p><p>而快速排序在千万个数据时也能在很快时间内完成排序.</p><p><img src="http://i2.tiimg.com/720150/63f6bf91971bbc3e.png" alt=""></p><p>快速排序的时间复杂度平均为 o(NlogN) 最坏情况为o(N^2)</p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构与算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 排序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>中介者模式</title>
       <link href="/2020/06/02/zhong-jie-zhe-mo-shi/"/>
       <url>/2020/06/02/zhong-jie-zhe-mo-shi/</url>
