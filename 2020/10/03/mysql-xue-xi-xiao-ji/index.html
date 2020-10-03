@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="快速排序, 王DerDer的Der">
+    <meta name="keywords" content="Mysql学习小计, 王DerDer的Der">
     <meta name="description" content="咱们都是大水比">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>快速排序 | 王DerDer的Der</title>
+    <title>Mysql学习小计 | 王DerDer的Der</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">快速排序</h1>
+                    <h1 class="description center-align post-title">Mysql学习小计</h1>
                 </div>
             </div>
         </div>
@@ -438,8 +438,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%8E%92%E5%BA%8F/">
-                                <span class="chip bg-color">排序</span>
+                            <a href="/tags/Mysql/">
+                                <span class="chip bg-color">-Mysql</span>
                             </a>
                         
                     </div>
@@ -450,8 +450,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
-                                数据结构与算法
+                            <a href="/categories/Mysql%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                Mysql数据库
                             </a>
                         
                     </div>
@@ -463,21 +463,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-06-03
+                    2020-10-03
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-06-08
+                    2020-10-03
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    716
+                    247
                 </div>
                 
 
@@ -494,132 +494,22 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><h4 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h4><p>设有数组S</p>
-<ol>
-<li>如果数组元素是0或者1则返回</li>
-<li>取S中任意元素v为pivot</li>
-<li>将S-{v}分为两个不相交的集合</li>
-<li>返回quickSort(S1),继而v,继而quickSort(S2)</li>
-</ol>
-<p><strong>选取枢纽元:</strong></p>
-<ol>
-<li>如果固定的选取第一个为pivot,当S为逆序时,分割就毫无意义.</li>
-<li>随机的选取枢纽元则会因随机数生成影响总体运行效率.</li>
-<li>三数中值分割法:使用左端,右端和中心位置三值的中值作为枢纽元.</li>
-</ol>
-<h3 id="代码-c"><a href="#代码-c" class="headerlink" title="代码(c#)"></a>代码(c#)</h3><pre><code>using System;
-
-
-namespace 快速排序
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            DateTime t1 = DateTime.Now;
-            Random rd = new Random();
-            int[] nums = new int[100];
-            for (int i = 0; i &lt; nums.Length; i++)
-            {
-                nums[i] = rd.Next(0, 10000);
-            }
-            QuickSort(nums, 0, nums.Length - 1);
-            Console.ReadKey();
-        }
-
-        public static void QuickSort(int[] arr, int startIndex, int endIndex)
-        {
-            int left = startIndex;
-            int right = endIndex - 1;
-            if ((left + 3) &lt;= right)
-            {
-                int pivot = Median(arr, startIndex, endIndex);
-                while (true)
-                {
-                    while (arr[++left] &lt; arr[pivot]) { }
-                    while (arr[--right] &gt; arr[pivot]) { }
-                    if (left &lt; right) { Swap(arr, left, right); }
-                    else break;
-                }
-                //交换pivot与left指针的值,此时left在right右边,大于pivot
-                Swap(arr, left, pivot);
-                //根据pivot分为两部分继续排序
-                QuickSort(arr, startIndex, left - 1);
-                QuickSort(arr, left + 1, endIndex);
-            }
-            else
-            {
-                //当需要排序的数值过少使用插入排序
-                InsertSort(arr, startIndex, endIndex + 1);
-            }
-
-        }
-        /// &lt;summary&gt;
-        /// 插入排序
-        /// &lt;/summary&gt;
-        /// &lt;param name="arr"&gt;&lt;/param&gt;
-        /// &lt;param name="n"&gt;&lt;/param&gt;
-        public static void InsertSort(int[] arr, int s, int n)
-        {
-            int temp, i, j;
-            for (i = s; i &lt; n; i++)
-            {
-                temp = arr[i];
-                for (j = i; j &gt; 0 &amp;&amp; arr[j - 1] &gt; temp; j--)
-                {
-                    arr[j] = arr[j - 1];
-                }
-                arr[j] = temp;
-            }
-
-        }
-        /// &lt;summary&gt;
-        /// 三数中值分割法:
-        /// &lt;/summary&gt;
-        /// &lt;param name="arr"&gt;&lt;/param&gt;
-        /// &lt;param name="left"&gt;&lt;/param&gt;
-        /// &lt;param name="right"&gt;&lt;/param&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
-        public static int Median(int[] arr, int left, int right)
-        {
-            int center = (left + right) / 2;
-
-            if (arr[left] &gt; arr[center])
-            {
-                Swap(arr, left, center);
-            }
-            if (arr[right] &lt; arr[left])
-            {
-                Swap(arr, right, center);
-            }
-            if (arr[center] &lt; arr[right])
-            {
-                Swap(arr, center, right);
-            }
-            Swap(arr, center, right - 1);
-            return right - 1;
-            //三值中,left为最小,right为最大,将枢纽元放到arr[right-1],在初始化阶段
-            //左右指针分别为left+1,right-2
-        }
-        /// &lt;summary&gt;
-        /// 交换数组中两个的位置
-        /// &lt;/summary&gt;
-        /// &lt;param name="arr"&gt;&lt;/param&gt;
-        /// &lt;param name="a"&gt;&lt;/param&gt;
-        /// &lt;param name="b"&gt;&lt;/param&gt;
-        public static void Swap(int[] arr, int a, int b)
-        {
-            int temp = arr[a];
-            arr[a] = arr[b];
-            arr[b] = temp;
-        }
-    }
-}
-</code></pre><p><img src="https://ww1.yunjiexi.club/2020/06/08/uboOw.png" alt="运行结果"></p>
-<p>用上方的插入排序和快速排序进行比较,当数据个数在百万时,插入排序要等待很久才能完成排序,</p>
-<p>而快速排序在千万个数据时也能在很快时间内完成排序.</p>
-<p><img src="https://ww1.yunjiexi.club/2020/06/08/ubkmP.png" alt=""></p>
-<p>快速排序的时间复杂度平均为 o(NlogN) 最坏情况为o(N^2)</p>
+                <h1 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h1><h4 id="Sql语句分类"><a href="#Sql语句分类" class="headerlink" title="Sql语句分类"></a><em>Sql语句分类</em></h4><p>1.DQL(数据查询语言):查询语句,凡是select都是DQL.  </p>
+<p>2.DML(数据操作语言):insert,delete,update 对表中的数据进行增删改.</p>
+<p>3.DDL(数据定义语言):create,drop,alter 对表的结构增删改</p>
+<p>4.TCL(事物控制语言):commit提交事物,rollback回滚事物</p>
+<p>5.DCL(数据控制语言):grant授权,revoke撤销权限</p>
+<p><strong>Tip:使用source 命令可以执行sql文件.</strong></p>
+<p><em>mysql 常用Dos命令:</em> </p>
+<ul>
+<li>select database(); 当前使用的数据库</li>
+<li>select version();  当前使用的数据库版本</li>
+<li>\c 结束一条语句</li>
+<li>exit\quit 退出数据库</li>
+</ul>
+<p><strong>Tip:</strong> 标准sql语句的字符串要求用单引号括起来.</p>
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><p>语法格式:</p>
+<pre><code>select 字段,字段 from 表名 where 条件;</code></pre><h4 id="Sql语句运算符"><a href="#Sql语句运算符" class="headerlink" title="Sql语句运算符"></a>Sql语句运算符</h4><p><img src="https://note.youdao.com/yws/api/personal/file/B7594062249A471F9DAD198F2F71BA42?method=download&amp;shareKey=584893762288442721ec20c9d0aaac6b" alt="2020/10/3 sql运算符"></p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -663,7 +553,7 @@ namespace 快速排序
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://WsDerDerDer.github.io/2020/06/03/kuai-su-pai-xu/">http://WsDerDerDer.github.io/2020/06/03/kuai-su-pai-xu/</a>
+                    <a href="http://WsDerDerDer.github.io/2020/10/03/mysql-xue-xi-xiao-ji/">http://WsDerDerDer.github.io/2020/10/03/mysql-xue-xi-xiao-ji/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -701,8 +591,8 @@ namespace 快速排序
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%8E%92%E5%BA%8F/">
-                                    <span class="chip bg-color">排序</span>
+                                <a href="/tags/Mysql/">
+                                    <span class="chip bg-color">-Mysql</span>
                                 </a>
                             
                         </div>
@@ -873,7 +763,7 @@ namespace 快速排序
         repo: 'Comment.github.io',
         owner: 'WsDerDerDer',
         admin: "WsDerDerDer",
-        id: '2020-06-03T22-56-33',
+        id: '2020-10-03T16-21-41',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -897,9 +787,10 @@ namespace 快速排序
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/10/03/mysql-xue-xi-xiao-ji/">
                     <div class="card-image">
@@ -919,9 +810,9 @@ namespace 快速排序
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -934,6 +825,7 @@ namespace 快速排序
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -952,33 +844,40 @@ namespace 快速排序
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/06/02/zhong-jie-zhe-mo-shi/">
+                <a href="/2020/06/03/kuai-su-pai-xu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="中介者模式">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="快速排序">
                         
-                        <span class="card-title">中介者模式</span>
+                        <span class="card-title">快速排序</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            设计模式之中介者模式介绍:用一个中介对象封装一系列的对象交互.中介者使各对象不必显示的相互引用,从而使其耦合松散而且可以独立地改变他们的交互
-优点：1.降低了类的复杂度，将一对多转化成了一对一。2.各个类之间的解耦。3.符合迪米特原则。
-缺
+                            快速排序基本步骤设有数组S
+
+如果数组元素是0或者1则返回
+取S中任意元素v为pivot
+将S-{v}分为两个不相交的集合
+返回quickSort(S1),继而v,继而quickSort(S2)
+
+选取枢纽元:
+
+如果固定的选取第一个为pi
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
-                                    设计模式
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
+                                    数据结构与算法
                                 </a>
                             
                             
@@ -988,8 +887,8 @@ namespace 快速排序
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
-                        <span class="chip bg-color">设计模式</span>
+                    <a href="/tags/%E6%8E%92%E5%BA%8F/">
+                        <span class="chip bg-color">排序</span>
                     </a>
                     
                 </div>
